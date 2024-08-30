@@ -50,7 +50,7 @@ public class Demo {
             while( hole > 0 &&  array[hole - 1] > key)
             {
                 array[hole] = array[hole-1];
-                hole = hole -1 ;
+                hole --;
             }
             array[hole] = key;
         }
@@ -61,7 +61,7 @@ public class Demo {
     public static int[] bubble_sort(int array[]){
         int length = array.length;
         
-        for (int i = 1; i < length-1; i++)
+        for (int i = 0; i < length-2; i++)
         {
             for (int j = 0; j< length-2; j++)
             {
@@ -148,6 +148,39 @@ public class Demo {
     }
 
 
+    public static int partition(int A[], int start, int end)
+    {
+        int pivot  = A[end];
+        int p_index = start;
+        for (int i = start; i< end-1;i++)
+        {
+            if (A[i] <= pivot)
+            {
+                int temp = A[i];
+                A[i] = A[p_index];
+                A[p_index] = temp;
+                p_index++;
+            }
+        }
+        int temp = A[p_index];
+        A[p_index] = A[end];
+        A[end] = temp;
+        return p_index;
+    }
+
+    public static int[] quicksort(int A[],int start, int end)
+    {
+        if (start < end)
+        {
+            int p_index = partition(A, start, end);
+            quicksort(A, start, p_index-1);
+            quicksort(A, p_index+1, end);
+        }
+
+        return A;
+        
+    }
+
     public static void main(String[] args) {
         int num1 = 7;
         int num2 = 2;
@@ -170,8 +203,9 @@ public class Demo {
         System.out.println("Sorted_Bubble array: "+  Arrays.toString(sorted_bubble));
 
         int[] sorted_merge = merge_sort(arr);
-        System.out.println("Sorrted_Merge array: "+ Arrays.toString(sorted_merge));        
-
+        System.out.println("Sorrted_Merge array: "+ Arrays.toString(sorted_merge));  
+        
+        
         
     }
 }
