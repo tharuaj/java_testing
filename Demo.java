@@ -16,6 +16,7 @@ public class Demo {
     //Selection Sort
     private static int[] selection_sort(int array[])
     {
+        
         int len = array.length;
         for (int i = 0; i < len -1;  i++)
         {
@@ -40,6 +41,7 @@ public class Demo {
     //Insertion Sort
     public static int[] insertion_sort(int array[])
     {
+        
         int length = array.length;
 
         for (int i = 1; i<length;i++)
@@ -59,6 +61,7 @@ public class Demo {
 
     //Bubble Sort
     public static int[] bubble_sort(int array[]){
+        
         int length = array.length;
         
         for (int i = 0; i < length-2; i++)
@@ -78,6 +81,7 @@ public class Demo {
 // Merge Sort
     public static int[] merge_sort(int array[])
     {
+        
         int len = array.length;
         if (len <2)
         {
@@ -98,8 +102,8 @@ public class Demo {
             array_R[i-mid] = array[i];
         }
 
-        merge_sort(array_L);
-        merge_sort(array_R);
+        array_L = merge_sort(array_L);
+        array_R = merge_sort(array_R);
         merge(array_L, array_R, array);
 
         return array;
@@ -152,10 +156,11 @@ public class Demo {
     {
         int pivot  = A[end];
         int p_index = start;
-        for (int i = start; i< end-1;i++)
+        for (int i = start; i<= end-1 ;i++)
         {
             if (A[i] <= pivot)
             {
+                
                 int temp = A[i];
                 A[i] = A[p_index];
                 A[p_index] = temp;
@@ -170,6 +175,7 @@ public class Demo {
 
     public static int[] quicksort(int A[],int start, int end)
     {
+        
         if (start < end)
         {
             int p_index = partition(A, start, end);
@@ -203,7 +209,10 @@ public class Demo {
         System.out.println("Sorted_Bubble array: "+  Arrays.toString(sorted_bubble));
 
         int[] sorted_merge = merge_sort(arr);
-        System.out.println("Sorrted_Merge array: "+ Arrays.toString(sorted_merge));  
+        System.out.println("Sorted_Merge array: "+ Arrays.toString(sorted_merge));
+        
+        int[] sorted_quick = quicksort(arr, 0, arr.length-1);
+        System.out.println("Sorted_Quick array: "+ Arrays.toString(sorted_quick));
         
         
         
