@@ -1,5 +1,5 @@
 import java.util.*;
-
+import java.util.List;
 public class BFSAlgorithm 
 {
 
@@ -18,6 +18,8 @@ public class BFSAlgorithm
         {
             distance.put(u, Integer.MAX_VALUE);  // Infinite distance
             visitOrder.put(u, Integer.MAX_VALUE);  // Infinite visit order
+            //System.out.println(distance);
+            //System.out.println(visitOrder);
         }
 
         int i = 0;  // Counter for visit order
@@ -28,20 +30,25 @@ public class BFSAlgorithm
             if (distance.get(v) == Integer.MAX_VALUE) 
             {  // If node v is not visited
                 i = BFS_VISIT(graph, v, i, distance, visitOrder, B);
+                
             }
+            
         }
 
         // Print the BFS result
+
         System.out.println("Visit Order: " + visitOrder);
         System.out.println("Visited Edges: " + B);
     }
+
+    
 
     // Function to perform BFS from a given node 's'
     public static int BFS_VISIT(Map<Integer, List<Integer>> graph, int s, int i,
                                 Map<Integer, Integer> distance, Map<Integer, Integer> visitOrder, Set<Edge> B) 
     {
         Queue<Integer> Q = new LinkedList<>();
-        distance.put(s, 0);  // Starting node has distance 0
+        distance.put(s, Integer.MAX_VALUE);  // Starting node has distance 0
         Q.add(s);  // Enqueue starting node
 
         while (!Q.isEmpty()) 
@@ -108,6 +115,7 @@ public class BFSAlgorithm
         graph.put(3, Arrays.asList(1, 5));
         graph.put(4, Arrays.asList(1, 2));
         graph.put(5, Arrays.asList(3));
+        System.out.println("Graph: "+ graph);
 
         // Call BFS
         BFS(graph);
