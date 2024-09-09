@@ -69,22 +69,22 @@ public class Graph {
     }
 
 
-    public static void bfs(ArrayList<Edge>[] graph, int v, boolean[] visited,int start)
+    public static void bfs(ArrayList<Edge>[] graph, int start, boolean[] visited)
     {
         Queue<Integer> q = new LinkedList<>();
         q.add(start);
 
         while (!q.isEmpty()) 
         {
-            int curr = q.remove();
-            if(visited[curr] == false)
+            int cur = q.remove();
+            if(visited[cur] == false)
             {
-                System.out.print(curr + " ");
-                visited[curr] = true;
+                System.out.print(cur + " ");
+                visited[cur] = true;
 
-                for(int i = 0; i< graph[curr].size();i++)
+                for(int i = 0; i< graph[cur].size();i++)
                 {
-                    Edge e = graph[curr].get(i);
+                    Edge e = graph[cur].get(i);
                     q.add(e.dst);
                 }
 
@@ -169,7 +169,7 @@ public class Graph {
         {
             if (visited[i] == false)
             {
-                bfs(graph1, v2, visited, i);
+                bfs(graph1, i, visited);
             }
         }
         System.out.println();
