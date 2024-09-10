@@ -29,46 +29,32 @@ public class Graph {
             graph[i] = new ArrayList<Edge>();
         }
 
-/*      graph[0].add(new Edge(0, 2,2));
-        
-        graph[1].add(new Edge(1,2,10));
-        graph[1].add(new Edge(1,3,0));
+        graph[0].add(new Edge(0, 1,3));
+        graph[0].add(new Edge(0,2,5));
 
-        graph[2].add(new Edge(2,0,2));
-        graph[2].add(new Edge(2,1,10));
-        graph[2].add(new Edge(2,3,-1));
+        graph[1].add(new Edge(1,0,3));
+        graph[1].add(new Edge(1,3,2));
 
-        graph[3].add(new Edge(3,1,0));
-        graph[3].add(new Edge(3,2,-2));
-
- */
-        graph[0].add(new Edge(0, 1));
-        graph[0].add(new Edge(0,2));
-
-        graph[1].add(new Edge(1,0));
-        graph[1].add(new Edge(1,3));
-
-        graph[2].add(new Edge(2,0));
-        graph[2].add(new Edge(2,4));
+        graph[2].add(new Edge(2,0,5));
+        graph[2].add(new Edge(2,4,2));
         
 
-        graph[3].add(new Edge(3,1));
-        graph[3].add(new Edge(3,4));
-        graph[3].add(new Edge(3,5));
+        graph[3].add(new Edge(3,1,2));
+        graph[3].add(new Edge(3,4,7));
+        graph[3].add(new Edge(3,5,3));
 
-        graph[4].add(new Edge(4, 2));
-        graph[4].add(new Edge(4, 3));
-        graph[4].add(new Edge(4, 5));
+        graph[4].add(new Edge(4, 2,2));
+        graph[4].add(new Edge(4, 3,7));
+        graph[4].add(new Edge(4, 5,4));
 
-        graph[5].add(new Edge(5, 3));
-        graph[5].add(new Edge(5, 4));
-        graph[5].add(new Edge(5, 6));
+        graph[5].add(new Edge(5, 3,3));
+        graph[5].add(new Edge(5, 4,4));
+        graph[5].add(new Edge(5, 6,1));
 
-        graph[6].add(new Edge(6,5));
+        graph[6].add(new Edge(6,5,1));
  
     }
-
-
+//--------------------------------------------------------------------------------
     public static void bfs(ArrayList<Edge>[] graph, int start, boolean[] visited)
     {
         Queue<Integer> q = new LinkedList<>();
@@ -92,7 +78,7 @@ public class Graph {
             
         }
     }
-
+//----------------------------------------------------------------------------------
     public static void dfs(ArrayList<Edge> graph[], int cur, boolean visited[])
     {
         System.out.print(cur+ " ");
@@ -107,12 +93,36 @@ public class Graph {
             }
         }
     }
-
-    public static void printAllPath(ArrayList<Edge> graph[], boolean vis[],int cur, String path,int tar)
+//-----------------------------------------------------------------------------
+    public static boolean isCycled(ArrayList<Edge> graph[], int cur, boolean vis[], boolean stack[])
     {
+        vis[cur]= true;
+        stack[cur] = true;
+
+        for (int i = 0; i < graph[cur].size();i++)
+        {
+            Edge e = graph[cur].get(i);
+
+            if(stack[e.dst])
+            {
+                return true;
+            }
+            else if (!vis[e.dst] && isCycled(graph, e.dst, vis, stack)) 
+            {
+                return true;
+            }
+        }
+        stack[cur] = false;
+        return false;
+    }
+//------------------------------------------------------------------------------
+    public static void printAllPath(ArrayList<Edge> graph[] ,int cur, boolean vis[], String path,int tar,int distance)
+    {
+        
         if(cur == tar)
         { 
-            System.out.println(path);
+            System.out.println("Path: "+ path);
+            System.out.println("Distance: "+ distance);
             return;
         }
 
@@ -121,8 +131,10 @@ public class Graph {
             Edge e = graph[cur].get(i);
             if(vis[e.dst] == false)
             {
+                
                 vis[cur] = true;
-                printAllPath(graph, vis, e.dst, path+e.dst, tar);
+                printAllPath(graph, e.dst, vis, path+e.dst, tar,distance+e.wt);
+                
                 vis[cur] = false;
             }
         }
@@ -162,7 +174,7 @@ public class Graph {
         @SuppressWarnings("unchecked")
         ArrayList<Edge>[] graph1 = new ArrayList[v2];
         createGraph(graph1);
-
+//----------------------------------------------------------------------------------
         boolean[] visited = new boolean[v2];
         System.out.println("BFS");
         for(int i = 0; i<v2; i++)
@@ -173,7 +185,8 @@ public class Graph {
             }
         }
         System.out.println();
-
+        System.out.println();
+//---------------------------------------------------------------------------------
         boolean[] visited1 = new boolean[v2];
         System.out.println("DFS");
         for(int i = 0; i<v2; i++)
@@ -183,13 +196,32 @@ public class Graph {
                 dfs(graph1, i, visited1);
             }
         }
-        
-
+        System.out.println();
+        System.out.println(); 
+//-----------------------------------------------------------------------------------
         boolean visited2[] = new boolean[v2];
         int source = 0;
+        int distance = 0;
         int target = 5;
-        System.out.println("All paths from "+ source+ " to "+ target+ " are: ");
-        printAllPath(graph1, visited2, source, "0", target);
+
+        System.out.println("Using DFS, All paths from "+ source+ " to "+ target+ " are: ");
+        printAllPath(graph1, source, visited2,  "0", target,distance);
         System.out.println();
+//------------------------------------------------------------------------------------
+        boolean vis[] = new boolean[v2];
+        boolean stack[] = new boolean[v2];
+        for (int i = 0; i < v2; i++)
+        {
+            if(!vis[i])
+            {
+                boolean cycled = isCycled(graph1, source, vis, stack);
+                if(cycled)
+                {
+                    System.out.println("Graph contains cycle");
+                    break;
+                }
+            }
+        }
+        
     }
 }
