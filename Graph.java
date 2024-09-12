@@ -2,6 +2,7 @@
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 public class Graph {
 
@@ -94,25 +95,22 @@ public class Graph {
         }
     }
 //-----------------------------------------------------------------------------
-    public static boolean isCycled(ArrayList<Edge> graph[], int cur, boolean vis[], boolean stack[])
+    public static boolean isCycledUndirected(ArrayList<Edge> graph[], int cur, boolean vis[], int par)
     {
         vis[cur]= true;
-        stack[cur] = true;
-
-        for (int i = 0; i < graph[cur].size();i++)
+        for( int i = 0; i< graph[cur].size();i++)
         {
             Edge e = graph[cur].get(i);
-
-            if(stack[e.dst])
+            if(vis[e.dst] && e.dst != par)
             {
                 return true;
             }
-            else if (!vis[e.dst] && isCycled(graph, e.dst, vis, stack)) 
+            else if(!vis[e.dst] && isCycledUndirected (graph, e.dst, vis, cur))
             {
                 return true;
             }
         }
-        stack[cur] = false;
+
         return false;
     }
 //------------------------------------------------------------------------------
@@ -140,26 +138,42 @@ public class Graph {
         }
 
     }
-    public static void main(String[] args) {
-        /* 
-        int v = 4;
-        @SuppressWarnings("unchecked")
-        ArrayList<Edge>[] graph = new ArrayList [v];
-        createGraph(graph);
-        
-        //j is for source vertex and i is for the adjacent vertex
-        for(int j = 0; j<v; j++)
+//-------------------------------------------------------------------------------
+    public static void topSortUtil(ArrayList<Edge> graph[], int cur, boolean vis[], Stack<Integer> stack)
+    {
+        vis[cur] = true;
+
+        for(int i = 0; i< graph[cur].size();i++)
         {
-            System.out.println("for Vertex: " +j);
-            for(int i = 0; i< graph[j].size();i++)
+            Edge e = graph[cur].get(i);
+
+            if(!vis[e.dst])
             {
-                Edge e = graph[j].get(i);
-                System.out.println("Neighbor: "+ e.dst+ " Weight: "+ e.wt);
-                
+                topSortUtil(graph, e.dst, vis, stack);
             }
-            System.out.println();
         }
-        */
+        stack.push(cur);
+    }
+
+    public static void topSort(ArrayList<Edge> graph[], int v)
+    {
+        boolean vis[] = new boolean[v];
+        Stack<Integer> stack = new Stack<>();
+        for(int i = 0; i<v; i++)
+        {
+            if(!vis[i])
+            {
+                topSortUtil(graph, i, vis, stack);
+            }
+        }
+        while(!stack.isEmpty())
+        {
+            System.out.print(stack.pop()+" ");
+        }
+        System.out.println();
+    }
+//-----------------------------------------------------------------------------
+    public static void main(String[] args) {
         
         /*      
                 1----3
@@ -209,12 +223,12 @@ public class Graph {
         System.out.println();
 //------------------------------------------------------------------------------------
         boolean vis[] = new boolean[v2];
-        boolean stack[] = new boolean[v2];
+
         for (int i = 0; i < v2; i++)
         {
             if(!vis[i])
             {
-                boolean cycled = isCycled(graph1, source, vis, stack);
+                boolean cycled = isCycledUndirected(graph1, source, vis, -1);
                 if(cycled)
                 {
                     System.out.println("Graph contains cycle");
@@ -222,6 +236,11 @@ public class Graph {
                 }
             }
         }
+        System.out.println();
+//---------------------------------------------------------------------------------
+        System.out.print("The topological sort is: ");
+        topSort(graph1, v2);
+        System.out.println();
         
     }
 }
