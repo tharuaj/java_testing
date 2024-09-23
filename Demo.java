@@ -64,9 +64,9 @@ public class Demo {
         
         int length = array.length;
         
-        for (int i = 0; i < length-2; i++)
+        for (int i = 0; i < length-1; i++)
         {
-            for (int j = 0; j< length-2; j++)
+            for (int j = 0; j< length-1-i; j++)
             {
                 if (array[j] > array[j+1])
                 {
@@ -113,9 +113,7 @@ public class Demo {
     {
         int nL = array_L.length;
         int nR = array_R.length;
-        int i = 0;
-        int j = 0;
-        int k = 0;
+        int i = 0; int j =0; int k = 0;
 
         while (i < nL && j < nR)
         {

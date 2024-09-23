@@ -64,7 +64,7 @@ public class Graph {
         while (!q.isEmpty()) 
         {
             int cur = q.remove();
-            if(visited[cur] == false)
+            if(visited[cur] == false)    
             {
                 System.out.print(cur + " ");
                 visited[cur] = true;
@@ -100,7 +100,7 @@ public class Graph {
         vis[cur]= true;
         for( int i = 0; i< graph[cur].size();i++)
         {
-            Edge e = graph[cur].get(i);
+            Edge e = graph[cur].get(i);    
             if(vis[e.dst] && e.dst != par)
             {
                 return true;
@@ -110,7 +110,7 @@ public class Graph {
                 return true;
             }
         }
-
+    
         return false;
     }
 //------------------------------------------------------------------------------
@@ -162,7 +162,7 @@ public class Graph {
         for(int i = 0; i<v; i++)
         {
             if(!vis[i])
-            {
+            {    
                 topSortUtil(graph, i, vis, stack);
             }
         }
@@ -234,6 +234,7 @@ public class Graph {
                     System.out.println("Graph contains cycle");
                     break;
                 }
+                System.out.println("No cycle Found");
             }
         }
         System.out.println();
